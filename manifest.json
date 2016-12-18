@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "Make America Kittens Again",
+  "description": "Replaces images of Donald Trump with kittens, because seriously, f*** that guy.",
+  "version": "1.0.1",
+
+  "permissions": [
+    "http://www.teaandkittens.co.uk/"
+  ],
+  "icons": { "48": "maka48.png",
+          "128": "maka128.png" },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["maka.js"]
+    }
+  ]
+}
