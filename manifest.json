@@ -3,10 +3,12 @@
 
   "name": "Make America Kittens Again",
   "description": "Replaces images of Donald Trump with kittens, because seriously, f*** that guy.",
-  "version": "1.0.1",
+  "version": "1.1.0",
+  "options_page": "makaoptions.html",
 
   "permissions": [
-    "http://www.teaandkittens.co.uk/"
+    "http://www.teaandkittens.co.uk/",
+    "storage"
   ],
   "icons": { "48": "maka48.png",
           "128": "maka128.png" },

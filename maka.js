@@ -1,9 +1,45 @@
 // maka.js - part of make america kittens again
+// v1.1
 // by Tom Royal 
 // tomroyal.com
 
-// kitten data!
+var makaTesting = false; // for debugging only
 
+if (makaTesting){
+	console.log('maka initiated');
+}	
+
+// init blacklist
+
+var blacklist = [];// global array
+blacklist.push("trump");
+
+// get additional settings from chrome storage
+
+chrome.storage.local.get({
+    blockPence: false,
+    blockFarage: false,
+    blockLePen: false,
+    blockWilders: false
+  }, function(items) { 
+	  if (items.blockPence){
+		  blacklist.push("mike pence");
+	  };
+	  if (items.blockFarage){
+		  blacklist.push("farage");
+	  };
+	  if (items.blockLePen){
+		  blacklist.push("le pen");
+	  };
+	  if (items.blockWilders){
+		  blacklist.push("geert wilders");
+	  };
+	  
+	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
+	  
+  });
+
+// kitten data!
 // Note - update 1.0.1 moves these to Amazon S3, as my old server wasn't designed to take the amount of traffic that MAKA was generating. If you use this code, please host your own copy of the images - thanks!
 
 var theKittens = {"kitten": [
@@ -44,17 +80,18 @@ var theKittens = {"kitten": [
 };
 
 function makanow(theKittens){
+	if (makaTesting){
+		console.log('maka processing blacklist is '+blacklist);
+	}
 
 	// called on page load. Searches all img alt text and srcs for the strings in blacklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
-	var blacklist = ["trump"];
 	while (img = pagepics[i++])
 	{	
+		var alttext = String(img.alt).toLowerCase();
+		var imgsrc = String(img.src).toLowerCase();
+		
 		blacklist.forEach(function(blist) {	
-			var alttext = String(img.alt);
-			alttext = alttext.toLowerCase();
-			var imgsrc = String(img.src);
-			imgsrc = imgsrc.toLowerCase();
 			if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1)){
 				var randk = Math.floor(Math.random() * 32) + 1
 				img.src = 'http://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
@@ -66,8 +103,9 @@ function makanow(theKittens){
 				};
 			};
 		});		
+	}
+	if (makaTesting){
+		console.log('maka processing complete');
 	}	    
 };
 
-// add listener
-document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
