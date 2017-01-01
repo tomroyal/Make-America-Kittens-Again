@@ -14,7 +14,7 @@
           "128": "maka128.png" },
   "content_scripts": [
     {
-      "matches": ["http://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["maka.js"]
     }
   ]

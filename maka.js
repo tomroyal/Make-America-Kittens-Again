@@ -32,7 +32,7 @@ chrome.storage.local.get({
 		  blacklist.push("le pen");
 	  };
 	  if (items.blockWilders){
-		  blacklist.push("geert wilders");
+		  blacklist.push("wilders");
 	  };
 	  
 	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
