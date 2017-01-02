@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v1.1
+// v1.1.1
 // by Tom Royal 
 // tomroyal.com
 
@@ -7,6 +7,11 @@ var makaTesting = false; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
+	
+	if (typeof jQuery != 'undefined') {  
+    	console.log('jQ loaded');
+	};
+	
 }	
 
 // init blacklist
@@ -90,11 +95,17 @@ function makanow(theKittens){
 	{	
 		var alttext = String(img.alt).toLowerCase();
 		var imgsrc = String(img.src).toLowerCase();
+		var parenttag = img.parentElement.innerHTML.toLowerCase();
+		var imgwidth = img.clientWidth;
+		var imgheight = img.clientHeight;
 		
 		blacklist.forEach(function(blist) {	
-			if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1)){
+			if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
 				var randk = Math.floor(Math.random() * 32) + 1
-				img.src = 'http://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
+				img.src = 'https://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
+				img.width = imgwidth;
+				img.height = imgheight;
+				
 				if (theKittens.kitten[randk].type == 0){
 					img.alt = 'Photo by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
 				}
