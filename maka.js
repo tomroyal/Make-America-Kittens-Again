@@ -1,9 +1,9 @@
 // maka.js - part of make america kittens again
-// v1.1.1
+// v1.1.2
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = false; // for debugging only
+var makaTesting = true; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
@@ -98,9 +98,28 @@ function makanow(theKittens){
 		var parenttag = img.parentElement.innerHTML.toLowerCase();
 		var imgwidth = img.clientWidth;
 		var imgheight = img.clientHeight;
+
 		
 		blacklist.forEach(function(blist) {	
 			if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
+				
+				// remove srcsets, forcing browser to the kitten - eg, BBC News
+				if (img.hasAttribute('srcset')){
+					img.removeAttribute('srcset');	
+				};
+				// remove source srcsets if using a <picture> element - eg, the Guardian
+				if (img.parentElement.nodeName == 'PICTURE'){
+					var theparent = img.parentNode;
+					for(var child=theparent.firstChild; child!==null; child=child.nextSibling) {
+					    if (child.nodeName == "SOURCE"){
+						    child.removeAttribute('src');
+						    child.removeAttribute('srcset');
+					    };
+					};
+					
+				};
+				
+				// main replacement here
 				var randk = Math.floor(Math.random() * 33) + 1
 				img.src = 'https://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
 				img.width = imgwidth;
