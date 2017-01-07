@@ -3,7 +3,7 @@
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = true; // for debugging only
+var makaTesting = false; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
@@ -11,6 +11,8 @@ if (makaTesting){
 	if (typeof jQuery != 'undefined') {  
     	console.log('jQ loaded');
 	};
+	
+	var makaReplacements = 0;
 	
 }	
 
@@ -95,7 +97,16 @@ function makanow(theKittens){
 	{	
 		var alttext = String(img.alt).toLowerCase();
 		var imgsrc = String(img.src).toLowerCase();
-		var parenttag = img.parentElement.innerHTML.toLowerCase();
+		
+		if (img.parentElement.nodeName != 'BODY'){
+			// check parent innerHTML for blackilist
+			var parenttag = img.parentElement.innerHTML.toLowerCase();
+		}
+		else {
+			// prevent parse of entire doc
+			var parenttag = '';
+		};
+		
 		var imgwidth = img.clientWidth;
 		var imgheight = img.clientHeight;
 
@@ -107,7 +118,7 @@ function makanow(theKittens){
 				if (img.hasAttribute('srcset')){
 					img.removeAttribute('srcset');	
 				};
-				// remove source srcsets if using a <picture> element - eg, the Guardian
+				// remove source srcsets if children of same parent <picture> element - eg, the Guardian
 				if (img.parentElement.nodeName == 'PICTURE'){
 					var theparent = img.parentNode;
 					for(var child=theparent.firstChild; child!==null; child=child.nextSibling) {
@@ -131,11 +142,12 @@ function makanow(theKittens){
 				else {
 					img.alt = 'Photo by '+theKittens.kitten[randk].Credit+'';
 				};
+				makaReplacements++;
 			};
 		});		
 	}
 	if (makaTesting){
-		console.log('maka processing complete');
+		console.log('maka processing complete, replaced '+makaReplacements+' images');
 	}	    
 };
 
