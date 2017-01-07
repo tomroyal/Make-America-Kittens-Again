@@ -101,7 +101,7 @@ function makanow(theKittens){
 		
 		blacklist.forEach(function(blist) {	
 			if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
-				var randk = Math.floor(Math.random() * 32) + 1
+				var randk = Math.floor(Math.random() * 33) + 1
 				img.src = 'https://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
 				img.width = imgwidth;
 				img.height = imgheight;
