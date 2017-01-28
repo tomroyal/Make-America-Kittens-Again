@@ -3,7 +3,7 @@
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = true; // for debugging only
+var makaTesting = false; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
@@ -133,9 +133,20 @@ function makanow(theKittens){
 						};
 						
 					};
+					// knock out lazyloader data URLs so it doesn't overwrite kittens
+					if (img.hasAttribute('data-src')){
+						img.removeAttribute('data-src');	
+					};
+					if (img.hasAttribute('data-hi-res-src')){
+						img.removeAttribute('data-hi-res-src');	
+					};
+					if (img.hasAttribute('data-low-res-src')){
+						img.removeAttribute('data-low-res-src');	
+					};
 					
 					// main replacement here
-					var randk = Math.floor(Math.random() * 33) + 1
+					var randk = Math.floor(Math.random() * 32) + 1
+					
 					img.src = 'https://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
 					img.width = imgwidth;
 					img.height = imgheight;
