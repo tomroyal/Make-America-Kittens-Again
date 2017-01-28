@@ -15,7 +15,7 @@ function DeMakaMenuClick(info, tab) {
         });
     });
 }
-
+/*
 function ReMakaMenuClick(info, tab) {
     chrome.tabs.query({
         "active": true,
@@ -26,6 +26,7 @@ function ReMakaMenuClick(info, tab) {
         });
     });
 }
+*/
 
 var setMAKAmenu1 = chrome.contextMenus.create({"title": "Make Kittens Trump Again :(", "contexts":["page"], "onclick": DeMakaMenuClick});
-var setMAKAmenu2 = chrome.contextMenus.create({"title": "MORE KITTENS", "contexts":["page"], "onclick": ReMakaMenuClick});
+// var setMAKAmenu2 = chrome.contextMenus.create({"title": "MORE KITTENS", "contexts":["page"], "onclick": ReMakaMenuClick});

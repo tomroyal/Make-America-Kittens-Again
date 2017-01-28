@@ -8,10 +8,6 @@ var makaTesting = true; // for debugging only
 if (makaTesting){
 	console.log('maka initiated');
 	
-	if (typeof jQuery != 'undefined') {  
-    	console.log('jQ loaded');
-	};
-	
 	var makaReplacements = 0;
 	
 }	
@@ -42,8 +38,7 @@ chrome.storage.local.get({
 		  blacklist.push("wilders");
 	  };
 	  
-	  // document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
-	  document.addEventListener('Load', makanow(theKittens), false); // second pass on full page load..
+	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
 	  
   });
 
@@ -176,6 +171,7 @@ function undomakanow(){
 				console.log('replacing image');
 			};
 			img.src = img.getAttribute('makareplaced');
+			img.removeAttribute('makareplaced');
 		};	
 	};
 	
@@ -185,9 +181,12 @@ function undomakanow(){
 
 chrome.extension.onMessage.addListener(function (message, sender, callback) {
     if (message.functiontoInvoke == "undoMAKA") {
+	    // undo function called
         undomakanow();
-    }
+    };
+    /*
     else if (message.functiontoInvoke == "redoMAKA") {
         makanow(theKittens);
     }
+    */
 });
