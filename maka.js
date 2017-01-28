@@ -14,7 +14,7 @@ if (makaTesting){
 
 // init blacklist
 
-var blacklist = ["trump", "трамп"];// global array
+var blacklist = ["trump", "трамп", "トランプ"]; // thanks to jSanchoDev and akiatoji for translations
 
 // get additional settings from chrome storage
 
@@ -26,6 +26,7 @@ chrome.storage.local.get({
   }, function(items) { 
 	  if (items.blockPence){
 		  blacklist.push("mike pence");
+		  blacklist.push("ペンス");
 	  };
 	  if (items.blockFarage){
 		  blacklist.push("farage");
