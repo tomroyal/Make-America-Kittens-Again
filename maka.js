@@ -14,8 +14,7 @@ if (makaTesting){
 
 // init blacklist
 
-var blacklist = [];// global array
-blacklist.push("trump");
+var blacklist = ["trump", "трамп"];// global array
 
 // get additional settings from chrome storage
 
