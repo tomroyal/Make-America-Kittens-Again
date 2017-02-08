@@ -22,7 +22,8 @@ chrome.storage.local.get({
     blockPence: false,
     blockFarage: false,
     blockLePen: false,
-    blockWilders: false
+    blockWilders: false,
+    blockBannon: false
   }, function(items) { 
 	  if (items.blockPence){
 		  blacklist.push("mike pence");
@@ -36,6 +37,9 @@ chrome.storage.local.get({
 	  };
 	  if (items.blockWilders){
 		  blacklist.push("wilders");
+	  };
+	  if (items.blockBannon){
+		  blacklist.push("bannon");
 	  };
 	  
 	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
