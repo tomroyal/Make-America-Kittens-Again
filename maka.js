@@ -3,7 +3,7 @@
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = false; // for debugging only
+var makaTesting = true; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
@@ -41,11 +41,13 @@ chrome.storage.local.get({
 		  blacklist.push("bannon");
 	  };
 	  // process custom blocklist
-	  var customBlockTargets = items.customBlock.split(',');
-	  customBlockTargets.forEach(function(blockTarget) {
-		    //console.log(blockTarget.trim().toLowerCase());
-		    blacklist.push(blockTarget.trim().toLowerCase())
-	  });
+	  
+	  if(items.customBlock){
+			var customBlockTargets = items.customBlock.split(',');
+			  customBlockTargets.forEach(function(blockTarget) {
+				    blacklist.push(blockTarget.trim().toLowerCase())
+			  });  
+	  };
 
 	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
 	  
