@@ -1,9 +1,9 @@
 // maka.js - part of make america kittens again
-// v1.1.3
+// v1.2.0
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = false; // for debugging only
+var makaTesting = true; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
@@ -47,7 +47,8 @@ chrome.storage.local.get({
   });
 
 // kitten data!
-// Note - update 1.0.1 moves these to Amazon S3, as my old server wasn't designed to take the amount of traffic that MAKA was generating. If you use this code, please host your own copy of the images - thanks!
+// Note - now moved from S3 to local storage
+
 
 var theKittens = {"kitten": [
     {"file": "1.jpg", "Credit": "Crsan", "URL": "http://www.flickr.com/photos/crsan/2571204498/", "type":"0"},
@@ -148,10 +149,10 @@ function makanow(theKittens){
 						img.removeAttribute('data-low-res-src');	
 					};
 					
-					// main replacement here
 					var randk = Math.floor(Math.random() * 32) + 1
 					
-					img.src = 'https://s3.amazonaws.com/makapics/'+theKittens.kitten[randk].file+'';
+					img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
+					
 					img.width = imgwidth;
 					img.height = imgheight;
 					
