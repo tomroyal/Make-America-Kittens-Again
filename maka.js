@@ -3,13 +3,11 @@
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = true; // for debugging only
+var makaTesting = false; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
-	
 	var makaReplacements = 0;
-	
 }	
 
 // init blacklist
@@ -23,7 +21,8 @@ chrome.storage.local.get({
     blockFarage: false,
     blockLePen: false,
     blockWilders: false,
-    blockBannon: false
+    blockBannon: false,
+    customBlock: false
   }, function(items) { 
 	  if (items.blockPence){
 		  blacklist.push("mike pence");
@@ -41,7 +40,13 @@ chrome.storage.local.get({
 	  if (items.blockBannon){
 		  blacklist.push("bannon");
 	  };
-	  
+	  // process custom blocklist
+	  var customBlockTargets = items.customBlock.split(',');
+	  customBlockTargets.forEach(function(blockTarget) {
+		    //console.log(blockTarget.trim().toLowerCase());
+		    blacklist.push(blockTarget.trim().toLowerCase())
+	  });
+
 	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
 	  
   });
