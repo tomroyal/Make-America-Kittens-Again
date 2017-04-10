@@ -1,9 +1,9 @@
 // maka.js - part of make america kittens again
-// v1.2.0
+// v1.2.1
 // by Tom Royal 
 // tomroyal.com
 
-var makaTesting = true; // for debugging only
+var makaTesting = false; // for debugging only
 
 if (makaTesting){
 	console.log('maka initiated');
