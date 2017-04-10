@@ -44,7 +44,9 @@ function restore_options() {
     document.getElementById('blocklepen').checked = items.blockLePen;
     document.getElementById('blockwilders').checked = items.blockWilders;
     document.getElementById('blockbannon').checked = items.blockBannon;
-    document.getElementById('customblock').value = items.customBlock;
+    if (items.customBlock != false){
+	    document.getElementById('customblock').value = items.customBlock;
+    };
   });
 }
 
