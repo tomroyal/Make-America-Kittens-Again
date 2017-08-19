@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v1.2.1
+// v1.2.2
 // by Tom Royal 
 // tomroyal.com
 
@@ -156,12 +156,23 @@ function makanow(theKittens){
 						img.removeAttribute('data-low-res-src');	
 					};
 					
+					// fix for wapo lazyloading huge sidebar pix..
+					if (window.location.href.indexOf('washingtonpost.com') != -1){
+					// console.log('wapo');	
+						if (img.classList.contains('unprocessed')){
+							// console.log('loreslazy');	
+							img.classList.remove('unprocessed');
+							
+						};
+					};
+
+					
 					var randk = Math.floor(Math.random() * 32) + 1
-					
 					img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
-					
 					img.width = imgwidth;
 					img.height = imgheight;
+					
+					
 					
 					if (theKittens.kitten[randk].type == 0){
 						img.alt = 'Photo by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
