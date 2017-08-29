@@ -120,12 +120,15 @@ function makanow(theKittens){
 				// prevent parse of entire doc
 				var parenttag = '';
 			};
-			
+			if (img.parentElement.parentElement.parentElement.nodeName == 'a'){
+				// check parent innerHTML for blackilist
+				var parenttag_fb_a = img.parentElement.parentElement.parentElement.innerHTML.toLowerCase();
+			};
 			var imgwidth = img.clientWidth;
 			var imgheight = img.clientHeight;
 	
 			blacklist.forEach(function(blist) {	
-				if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
+				if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1) || (parenttag_fb_a.indexOf(blist) != -1)){
 					
 					// append old src
 					img.setAttribute("makareplaced", img.src);
