@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v1.2.2
+// v1.3.0
 // by Tom Royal 
 // tomroyal.com
 
@@ -12,7 +12,7 @@ if (makaTesting){
 
 // init blacklist
 
-var blacklist = ["trump", "трамп", "トランプ"]; // thanks to jSanchoDev and akiatoji for translations
+var blacklist = ["trump", "трамп", "トランプ", "pbs.twimg.com/profile_images/874276197357596672"]; // thanks to jSanchoDev and akiatoji for translations
 
 // get additional settings from chrome storage
 
@@ -56,7 +56,6 @@ chrome.storage.local.get({
 // kitten data!
 // Note - now moved from S3 to local storage
 
-
 var theKittens = {"kitten": [
     {"file": "1.jpg", "Credit": "Crsan", "URL": "http://www.flickr.com/photos/crsan/2571204498/", "type":"0"},
 	{"file": "2.jpg", "Credit": "Abcrumley", "URL": "http://www.flickr.com/photos/crumley/160490011/", "type":"0"},
@@ -90,7 +89,10 @@ var theKittens = {"kitten": [
 	{"file": "30.jpg", "Credit": "Woodchild2010", "URL": "http://www.flickr.com/photos/woodchild/5335939044/", "type":"0"},
 	{"file": "31.jpg", "Credit": "Ollie Crafoord", "URL": "http://www.flickr.com/photos/lollaping/5277362546/", "type":"0"},
 	{"file": "32.jpg", "Credit": "Mami Terai", "URL": "http://www.google.com", "type":"1"},
-	{"file": "33.jpg", "Credit": "Sam Scheibel", "URL": "http://www.google.com", "type":"1"}
+	{"file": "33.jpg", "Credit": "Sam Scheibel", "URL": "http://www.google.com", "type":"1"},
+	{"file": "34.jpg", "Credit": "Sydney Pettygrove", "URL": "http://www.google.com", "type":"1"},
+	{"file": "35.jpg", "Credit": "Sydney Pettygrove", "URL": "http://www.google.com", "type":"1"},
+	{"file": "36.jpg", "Credit": "Dionna Humphrey", "URL": "https://twitter.com/MadeMePretty", "type":"1"}
     ]
 };
 
@@ -165,9 +167,8 @@ function makanow(theKittens){
 							
 						};
 					};
-
 					
-					var randk = Math.floor(Math.random() * 32) + 1
+					var randk = Math.floor(Math.random() * 35) + 1
 					img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
 					img.width = imgwidth;
 					img.height = imgheight;
@@ -224,3 +225,17 @@ chrome.extension.onMessage.addListener(function (message, sender, callback) {
     }
     */
 });
+
+// Twitter Dot Com
+// Huge thanks to @aidobreen for the code to catch DOM modification on Twitter
+// https://medium.com/@aidobreen/fixing-twitter-with-a-chrome-extension-1f53320f5a01
+if (window.location.href.indexOf('twitter.com') != -1){
+	function DOMModificationHandler(){		
+		$(this).unbind('DOMSubtreeModified.event1');
+		setTimeout(function(){
+				makanow(theKittens);
+				$('#timeline').bind('DOMSubtreeModified.event1',DOMModificationHandler);
+		},10);
+	}
+	$('#timeline').bind('DOMSubtreeModified.event1', DOMModificationHandler);
+};
