@@ -22,6 +22,7 @@ chrome.storage.local.get({
     blockLePen: false,
     blockWilders: false,
     blockBannon: false,
+		blockBoris: false,
     customBlock: false
   }, function(items) { 
 	  if (items.blockPence){
@@ -39,6 +40,9 @@ chrome.storage.local.get({
 	  };
 	  if (items.blockBannon){
 		  blacklist.push("bannon");
+	  };
+		if (items.blockBoris){
+		  blacklist.push("boris johnson");
 	  };
 	  // process custom blocklist
 	  

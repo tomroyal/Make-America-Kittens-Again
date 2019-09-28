@@ -2,20 +2,14 @@
 
 // Saves options to chrome.storage
 function save_options() {
-  var blockPence = document.getElementById('blockpence').checked;
-  var blockFarage = document.getElementById('blockfarage').checked;
-  var blockLePen = document.getElementById('blocklepen').checked; 
-  var blockWilders = document.getElementById('blockwilders').checked; 
-  var blockBannon = document.getElementById('blockbannon').checked; 
-  var customBlock = document.getElementById('customblock').value; 
-  
   chrome.storage.local.set({
-    blockPence: blockPence,
-    blockFarage: blockFarage,
-    blockLePen: blockLePen,
-    blockWilders: blockWilders,
-    blockBannon: blockBannon,
-    customBlock: customBlock
+    blockPence: document.getElementById('blockpence').checked,
+    blockFarage: document.getElementById('blockfarage').checked,
+    blockLePen: document.getElementById('blocklepen').checked,
+    blockWilders: document.getElementById('blockwilders').checked,
+    blockBannon: document.getElementById('blockbannon').checked,
+    blockBoris: document.getElementById('blockboris').checked,
+    customBlock: document.getElementById('customblock').value
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -37,6 +31,7 @@ function restore_options() {
     blockLePen: false,
     blockWilders: false,
     blockBannon: false,
+    blockBoris: false,
     customBlock: false
   }, function(items) {
     document.getElementById('blockpence').checked = items.blockPence;
@@ -44,6 +39,7 @@ function restore_options() {
     document.getElementById('blocklepen').checked = items.blockLePen;
     document.getElementById('blockwilders').checked = items.blockWilders;
     document.getElementById('blockbannon').checked = items.blockBannon;
+    document.getElementById('blockboris').checked = items.blockBoris;
     if (items.customBlock != false){
 	    document.getElementById('customblock').value = items.customBlock;
     };
@@ -51,5 +47,8 @@ function restore_options() {
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-    save_options);
+document.getElementById('save').addEventListener('click',function(event){
+  event.preventDefault();
+  save_options();
+});
+
