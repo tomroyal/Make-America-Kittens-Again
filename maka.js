@@ -172,14 +172,14 @@ function undomakanow(){
 }
 
 // listener for context menu click invoking the above
-
+/*
 chrome.extension.onMessage.addListener(function (message, sender, callback) {
     if (message.functiontoInvoke == "undoMAKA") {
 	    // undo function called
         undomakanow();
     };
 });
-
+*/
 // main listener
 
 document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
