@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v1.3.0
+// v1.4.1
 // by Tom Royal 
 // tomroyal.com
 
@@ -12,53 +12,9 @@ if (makaTesting){
 
 // init blacklist
 
-var blacklist = ["trump", "трамп", "トランプ", "pbs.twimg.com/profile_images/874276197357596672"]; // thanks to jSanchoDev and akiatoji for translations
-
-// get additional settings from chrome storage
-
-chrome.storage.local.get({
-    blockPence: false,
-    blockFarage: false,
-    blockLePen: false,
-    blockWilders: false,
-    blockBannon: false,
-		blockBoris: false,
-    customBlock: false
-  }, function(items) { 
-	  if (items.blockPence){
-		  blacklist.push("mike pence");
-		  blacklist.push("ペンス");
-	  };
-	  if (items.blockFarage){
-		  blacklist.push("farage");
-	  };
-	  if (items.blockLePen){
-		  blacklist.push("le pen");
-	  };
-	  if (items.blockWilders){
-		  blacklist.push("wilders");
-	  };
-	  if (items.blockBannon){
-		  blacklist.push("bannon");
-	  };
-		if (items.blockBoris){
-		  blacklist.push("boris johnson");
-	  };
-	  // process custom blocklist
-	  
-	  if(items.customBlock){
-			var customBlockTargets = items.customBlock.split(',');
-			  customBlockTargets.forEach(function(blockTarget) {
-				    blacklist.push(blockTarget.trim().toLowerCase())
-			  });  
-	  };
-
-	  document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
-	  
-  });
+var blacklist = ["trump", "трамп", "トランプ"]; // thanks to jSanchoDev and akiatoji for translations
 
 // kitten data!
-// Note - now moved from S3 to local storage
 
 var theKittens = {"kitten": [
     {"file": "1.jpg", "Credit": "Crsan", "URL": "http://www.flickr.com/photos/crsan/2571204498/", "type":"0"},
@@ -175,9 +131,7 @@ function makanow(theKittens){
 					var randk = Math.floor(Math.random() * 35) + 1
 					img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
 					img.width = imgwidth;
-					img.height = imgheight;
-					
-					
+					img.height = imgheight;				
 					
 					if (theKittens.kitten[randk].type == 0){
 						img.alt = 'Photo by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
@@ -223,23 +177,8 @@ chrome.extension.onMessage.addListener(function (message, sender, callback) {
 	    // undo function called
         undomakanow();
     };
-    /*
-    else if (message.functiontoInvoke == "redoMAKA") {
-        makanow(theKittens);
-    }
-    */
 });
 
-// Twitter Dot Com
-// Huge thanks to @aidobreen for the code to catch DOM modification on Twitter
-// https://medium.com/@aidobreen/fixing-twitter-with-a-chrome-extension-1f53320f5a01
-if (window.location.href.indexOf('twitter.com') != -1){
-	function DOMModificationHandler(){		
-		$(this).unbind('DOMSubtreeModified.event1');
-		setTimeout(function(){
-				makanow(theKittens);
-				$('#timeline').bind('DOMSubtreeModified.event1',DOMModificationHandler);
-		},10);
-	}
-	$('#timeline').bind('DOMSubtreeModified.event1', DOMModificationHandler);
-};
+// main listener
+
+document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
