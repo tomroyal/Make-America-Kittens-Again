@@ -63,8 +63,7 @@ function makanow(theKittens){
 
 	// called on page load. Searches all img alt text and srcs for the strings in blacklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
-	while (img = pagepics[i++])
-	{	
+	while (img = pagepics[i++]){	
 		
 		if (img.hasAttribute('makareplaced')){
 			// already replaced	
@@ -85,10 +84,10 @@ function makanow(theKittens){
 			
 			var imgwidth = img.clientWidth;
 			var imgheight = img.clientHeight;
-	
+
 			blacklist.forEach(function(blist) {	
 				if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
-					
+
 					// append old src
 					img.setAttribute("makareplaced", img.src);
 					
@@ -134,10 +133,12 @@ function makanow(theKittens){
 					img.height = imgheight;				
 					
 					if (theKittens.kitten[randk].type == 0){
-						img.alt = 'Photo by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
+						img.alt = 'A photo of an adorable kitten';
+						img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
 					}
 					else {
-						img.alt = 'Photo by '+theKittens.kitten[randk].Credit+'';
+						img.alt = 'A photo of an adorable kitten';
+						img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+'';
 					};
 					makaReplacements++;
 				};
@@ -182,3 +183,4 @@ chrome.extension.onMessage.addListener(function (message, sender, callback) {
 // main listener
 
 document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
+
