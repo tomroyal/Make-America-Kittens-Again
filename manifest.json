@@ -1,37 +1,44 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Make America Kittens Again",
   "description": "Replaces images of Donald Trump with kittens. Again.",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "options_page": "makaoptions.html",
 
-  "permissions": [
-    "http://www.teaandkittens.co.uk/",
-    "contextMenus"
-  ],
+  "permissions": [],
   "icons": { "48": "maka48.png",
           "128": "maka128.png" },
-  "browser_action": {
+  "action": {
           "default_icon": { 
 	           "48": "maka48.png",
 			   "128": "maka128.png" 
           },
           "default_title": "#MAKA",      
           "default_popup": "makaoptions.html"       
-        },        
-  
-  "background": {
-    "scripts": ["setmakamenu.js"]
-  },
-          
+  },          
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["jquery-3.3.1.min.js","maka.js"]
+      "js": [
+        "jquery-3.3.1.min.js",
+        "maka.js"
+      ]
     }
   ],
   "web_accessible_resources": [
-    "kittens/*.jpg"
+    {
+      "resources": [
+        "kittens/1.jpg","kittens/2.jpg","kittens/3.jpg","kittens/4.jpg","kittens/5.jpg",
+        "kittens/6.jpg","kittens/7.jpg","kittens/8.jpg","kittens/9.jpg","kittens/10.jpg",
+        "kittens/11.jpg","kittens/12.jpg","kittens/13.jpg","kittens/14.jpg","kittens/15.jpg",
+        "kittens/16.jpg","kittens/17.jpg","kittens/18.jpg","kittens/19.jpg","kittens/20.jpg",
+        "kittens/16.jpg","kittens/17.jpg","kittens/18.jpg","kittens/19.jpg","kittens/20.jpg",
+        "kittens/21.jpg","kittens/22.jpg","kittens/23.jpg","kittens/24.jpg","kittens/25.jpg",
+        "kittens/26.jpg","kittens/27.jpg","kittens/28.jpg","kittens/29.jpg","kittens/30.jpg",
+        "kittens/31.jpg","kittens/32.jpg","kittens/33.jpg","kittens/34.jpg","kittens/35.jpg","kittens/36.jpg"
+      ],
+      "matches": ["<all_urls>"]
+    }
   ]
 }
