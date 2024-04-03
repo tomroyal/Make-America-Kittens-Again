@@ -3,13 +3,10 @@
 
   "name": "Make America Kittens Again",
   "description": "Replaces images of Donald Trump with kittens. Again.",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "options_page": "makaoptions.html",
 
-  "permissions": [
-
-    "contextMenus"
-  ],
+  "permissions": [],
   "icons": { "48": "maka48.png",
           "128": "maka128.png" },
   "action": {

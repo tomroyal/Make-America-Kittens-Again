@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v1.4.1
+// v1.4.2
 // by Tom Royal 
 // tomroyal.com
 
