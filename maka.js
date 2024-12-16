@@ -1,18 +1,25 @@
 // maka.js - part of make america kittens again
-// v1.4.2
+// v1.5.1
 // by Tom Royal 
 // tomroyal.com
 
 var makaTesting = false; // for debugging only
+var makaReplacements = 0;
 
 if (makaTesting){
 	console.log('maka initiated');
-	var makaReplacements = 0;
 }	
 
-// init blacklist
+// utility
 
-var blacklist = ["trump", "трамп", "トランプ"]; // thanks to jSanchoDev and akiatoji for translations
+function randomIntFromInterval(min, max) { // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// init blocklist
+
+var blocklist = ["trump", "трамп", "トランプ", "vance", ]; // thanks to jSanchoDev and akiatoji for translations
+var passlist = ["trumpet","trumped","trumping", "strump","strumpa"];
 
 // kitten data!
 
@@ -52,21 +59,78 @@ var theKittens = {"kitten": [
 	{"file": "33.jpg", "Credit": "Sam Scheibel", "URL": "http://www.google.com", "type":"1"},
 	{"file": "34.jpg", "Credit": "Sydney Pettygrove", "URL": "http://www.google.com", "type":"1"},
 	{"file": "35.jpg", "Credit": "Sydney Pettygrove", "URL": "http://www.google.com", "type":"1"},
-	{"file": "36.jpg", "Credit": "Dionna Humphrey", "URL": "https://twitter.com/MadeMePretty", "type":"1"}
+	{"file": "36.jpg", "Credit": "Dionna Humphrey", "URL": "https://twitter.com/MadeMePretty", "type":"1"},
+    {"file": "37.jpg", "Credit": "Winter Miller", "URL": "https://wintermiller.com/not-a-cat", "type":"1"}
     ]
 };
 
-function makanow(theKittens){
-	if (makaTesting){
-		console.log('maka processing blacklist is '+blacklist);
-	}
+function makaReplace(img){
+    // do an image replacement
 
-	// called on page load. Searches all img alt text and srcs for the strings in blacklist, replaces with kittens
+    // append old src
+    img.setAttribute("makareplaced", img.src);
+                        
+    // remove srcsets, forcing browser to the kitten - eg, BBC News
+    if (img.hasAttribute('srcset')){
+        img.removeAttribute('srcset');
+    };
+    // remove source srcsets if children of same parent <picture> element - eg, the Guardian
+    if (img.parentElement.nodeName == 'PICTURE'){
+        var theparent = img.parentNode;
+        for(var child=theparent.firstChild; child!==null; child=child.nextSibling) {
+            if (child.nodeName == "SOURCE"){
+                child.removeAttribute('src');
+                child.removeAttribute('srcset');
+            };
+        };
+    };
+    // knock out lazyloader data URLs so it doesn't overwrite kittens
+    if (img.hasAttribute('data-src')){
+        img.removeAttribute('data-src');
+    };
+    if (img.hasAttribute('data-hi-res-src')){
+        img.removeAttribute('data-hi-res-src');
+    };
+    if (img.hasAttribute('data-low-res-src')){
+        img.removeAttribute('data-low-res-src');
+    };
+    
+    // fix for wapo lazyloading huge sidebar pix..
+    if (window.location.href.indexOf('washingtonpost.com') != -1){
+        // console.log('wapo');
+        if (img.classList.contains('unprocessed')){
+            // console.log('loreslazy');
+            img.classList.remove('unprocessed');
+            
+        };
+    };
+    
+    var imgwidth = img.clientWidth;
+	var imgheight = img.clientHeight;
+    var randk = (randomIntFromInterval(1, theKittens.kitten.length)) - 1;
+    img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
+    img.width = imgwidth;
+    img.height = imgheight;
+    
+    if (theKittens.kitten[randk].type == 0){
+        img.alt = 'A photo of an adorable kitten';
+        img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
+    }
+    else {
+        img.alt = 'A photo of an adorable kitten';
+        img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+'';
+    };
+    
+}
+
+function makanow(){
+
+	// called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
 	while (img = pagepics[i++]){	
 		
 		if (img.hasAttribute('makareplaced')){
-			// already replaced	
+			// already replaced, skip
 		}
 		else {
 			// not yet replaced
@@ -81,106 +145,34 @@ function makanow(theKittens){
 				// prevent parse of entire doc
 				var parenttag = '';
 			};
-			
-			var imgwidth = img.clientWidth;
-			var imgheight = img.clientHeight;
-
-			blacklist.forEach(function(blist) {	
-				if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
-
-					// append old src
-					img.setAttribute("makareplaced", img.src);
-					
-					// remove srcsets, forcing browser to the kitten - eg, BBC News
-					if (img.hasAttribute('srcset')){
-						img.removeAttribute('srcset');	
-					};
-					// remove source srcsets if children of same parent <picture> element - eg, the Guardian
-					if (img.parentElement.nodeName == 'PICTURE'){
-						var theparent = img.parentNode;
-						for(var child=theparent.firstChild; child!==null; child=child.nextSibling) {
-						    if (child.nodeName == "SOURCE"){
-							    child.removeAttribute('src');
-							    child.removeAttribute('srcset');
-						    };
-						};
-						
-					};
-					// knock out lazyloader data URLs so it doesn't overwrite kittens
-					if (img.hasAttribute('data-src')){
-						img.removeAttribute('data-src');	
-					};
-					if (img.hasAttribute('data-hi-res-src')){
-						img.removeAttribute('data-hi-res-src');	
-					};
-					if (img.hasAttribute('data-low-res-src')){
-						img.removeAttribute('data-low-res-src');	
-					};
-					
-					// fix for wapo lazyloading huge sidebar pix..
-					if (window.location.href.indexOf('washingtonpost.com') != -1){
-					// console.log('wapo');	
-						if (img.classList.contains('unprocessed')){
-							// console.log('loreslazy');	
-							img.classList.remove('unprocessed');
-							
-						};
-					};
-					
-					var randk = Math.floor(Math.random() * 35) + 1
-					img.src = chrome.runtime.getURL('/kittens/'+theKittens.kitten[randk].file+'');
-					img.width = imgwidth;
-					img.height = imgheight;				
-					
-					if (theKittens.kitten[randk].type == 0){
-						img.alt = 'A photo of an adorable kitten';
-						img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+' source '+theKittens.kitten[randk].URL+'';
-					}
-					else {
-						img.alt = 'A photo of an adorable kitten';
-						img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+'';
-					};
-					makaReplacements++;
-				};
-			});	
-		};				
+            
+            // check for allowlist
+            var maybeReplace = true;
+            passlist.forEach(function(plist) {
+                if ((alttext.indexOf(plist) != -1) || (imgsrc.indexOf(plist) != -1) || (parenttag.indexOf(plist) != -1)){
+                    // let this pass
+                    console.log('pass');
+                    img.setAttribute("makareplaced", img.src);
+                    maybeReplace = false;
+                }
+            });
+            
+            if (maybeReplace){
+                // not allow-listed
+                blocklist.forEach(function(blist) {
+                    if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
+                        // matches, replace
+                        makaReplace(img);
+                        makaReplacements++;
+                    };
+                });	// func on blist
+            }; // if maybeReplace
+		};
 	}
 	if (makaTesting){
 		console.log('maka processing complete, replaced '+makaReplacements+' images');
 	}	    
 };
-
-// function to replace kittened-images with the original SRCs
-
-function undomakanow(){
-	if (makaTesting){
-		console.log('undoing MAKA');
-	}
-
-	var pagepics=document.getElementsByTagName("img"), i=0, img;	
-	while (img = pagepics[i++])
-	{	
-		if (img.hasAttribute('makareplaced')){
-			if (makaTesting){
-				console.log('replacing image');
-			};
-			img.src = img.getAttribute('makareplaced');
-			img.removeAttribute('makareplaced');
-		};	
-	};
-	
-}
-
-// listener for context menu click invoking the above
-/*
-chrome.extension.onMessage.addListener(function (message, sender, callback) {
-    if (message.functiontoInvoke == "undoMAKA") {
-	    // undo function called
-        undomakanow();
-    };
-});
-*/
-// main listener
 
 document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
 

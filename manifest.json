@@ -3,7 +3,7 @@
 
   "name": "Make America Kittens Again",
   "description": "Replaces images of Donald Trump with kittens. Again.",
-  "version": "1.4.2",
+  "version": "1.5.1",
   "options_page": "makaoptions.html",
 
   "permissions": [],
@@ -36,7 +36,8 @@
         "kittens/16.jpg","kittens/17.jpg","kittens/18.jpg","kittens/19.jpg","kittens/20.jpg",
         "kittens/21.jpg","kittens/22.jpg","kittens/23.jpg","kittens/24.jpg","kittens/25.jpg",
         "kittens/26.jpg","kittens/27.jpg","kittens/28.jpg","kittens/29.jpg","kittens/30.jpg",
-        "kittens/31.jpg","kittens/32.jpg","kittens/33.jpg","kittens/34.jpg","kittens/35.jpg","kittens/36.jpg"
+        "kittens/31.jpg","kittens/32.jpg","kittens/33.jpg","kittens/34.jpg","kittens/35.jpg",
+        "kittens/36.jpg","kittens/37.jpg"
       ],
       "matches": ["<all_urls>"]
     }
