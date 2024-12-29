@@ -1,4 +1,4 @@
-// maka.js - part of make america kittens again
+﻿// maka.js - part of make america kittens again
 // v1.5.1
 // by Tom Royal 
 // tomroyal.com
@@ -16,10 +16,23 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// init blocklist
+// init lists
+var blocklist = [];
+var passlist = [];
 
-var blocklist = ["trump", "трамп", "トランプ", "vance", ]; // thanks to jSanchoDev and akiatoji for translations
-var passlist = ["trumpet","trumped","trumping", "strump","strumpa"];
+// load configuration and initialize
+function initMaka() {
+    chrome.storage.sync.get({
+        blocklist: ["trump", "трамп", "トランプ", "vance"], // thanks to jSanchoDev and akiatoji for translations
+        passlist: ["trumpet", "trumped", "trumping", "strump", "strumpa"]
+    }, function(items) {
+        blocklist = items.blocklist;
+        passlist = items.passlist;
+        // Only run makanow after lists are loaded
+        console.log(blocklist);
+        makanow(theKittens);
+    });
+}
 
 // kitten data!
 
@@ -124,7 +137,6 @@ function makaReplace(img){
 }
 
 function makanow(){
-
 	// called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
 	while (img = pagepics[i++]){	
@@ -174,5 +186,5 @@ function makanow(){
 	}	    
 };
 
-document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
+document.addEventListener('DOMContentLoaded', initMaka(), false);
 
