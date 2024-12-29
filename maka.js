@@ -29,7 +29,6 @@ function initMaka() {
         blocklist = items.blocklist;
         passlist = items.passlist;
         // Only run makanow after lists are loaded
-        console.log(blocklist);
         makanow(theKittens);
     });
 }
