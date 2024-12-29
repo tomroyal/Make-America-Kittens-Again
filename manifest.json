@@ -6,7 +6,7 @@
   "version": "1.5.1",
   "options_page": "makaoptions.html",
 
-  "permissions": [],
+  "permissions": ["storage"],
   "icons": { "48": "maka48.png",
           "128": "maka128.png" },
   "action": {
