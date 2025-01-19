@@ -1,7 +1,8 @@
 // maka.js - part of make america kittens again
-// v1.5.1
+// v1.5.2
 // by Tom Royal 
 // tomroyal.com
+// Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
 
 var makaTesting = false; // for debugging only
 var makaReplacements = 0;
@@ -18,8 +19,8 @@ function randomIntFromInterval(min, max) { // min and max included
 
 // init blocklist
 
-var blocklist = ["trump", "трамп", "トランプ", "vance", ]; // thanks to jSanchoDev and akiatoji for translations
-var passlist = ["advance", "trumpet","trumped","trumping", "strump","strumpa"];
+var blocklist = ["trump", "трамп", "トランプ", "vance", ]; 
+var passlist = ["observance","irrelevance","contrivance","grievance","relevance","advance", "trumpet","trumped","trumping", "strump","strumpa"];
 
 // kitten data!
 
