@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v2.2.0
+// v2.2.1
 // by Tom Royal 
 // tomroyal.com
 // Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
@@ -7,11 +7,13 @@
 var makaTesting = false; // for debugging only
 var makaReplacements = 0;
 
-if (makaTesting){
-	console.log('maka initiated');
-}	
-
 // utility
+
+function makaLog(logThis){
+    if (makaTesting){
+        console.log(logThis);
+    }
+}
 
 function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -98,9 +100,7 @@ function makaReplace(img){
     
     // fix for wapo lazyloading huge sidebar pix..
     if (window.location.href.indexOf('washingtonpost.com') != -1){
-        // console.log('wapo');
         if (img.classList.contains('unprocessed')){
-            // console.log('loreslazy');
             img.classList.remove('unprocessed');
             
         };
@@ -121,10 +121,13 @@ function makaReplace(img){
         img.alt = 'A photo of an adorable kitten';
         img.title = 'A photo of a kitten taken by '+theKittens.kitten[randk].Credit+'';
     };
+
     
 }
 
 function makanow(){
+
+    makaLog('maka init');
 
 	// called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
@@ -152,7 +155,6 @@ function makanow(){
             passlist.forEach(function(plist) {
                 if ((alttext.indexOf(plist) != -1) || (imgsrc.indexOf(plist) != -1) || (parenttag.indexOf(plist) != -1)){
                     // let this pass
-                    console.log('pass');
                     img.setAttribute("makareplaced", img.src);
                     maybeReplace = false;
                 }
@@ -163,16 +165,33 @@ function makanow(){
                 blocklist.forEach(function(blist) {
                     if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
                         // matches, replace
-                        makaReplace(img);
+
+                        if (window.location.href.indexOf('nytimes.com') != -1){
+                            // Need to prevent React page re-hydrating image
+                            // duplicate image, delete original, kitten the new one
+                            makaLog('nyt clone');
+                            const clonedImage = img.cloneNode(true);
+                            newimg = img.parentNode.appendChild(clonedImage);
+                            img.remove();
+                            makaReplace(newimg);
+                        }
+                        else {
+                            makaReplace(img);
+                        }
+                        
                         makaReplacements++;
                     };
                 });	// func on blist
             }; // if maybeReplace
 		};
 	}
-	if (makaTesting){
-		console.log('maka processing complete, replaced '+makaReplacements+' images');
-	}	    
+    makaLog('maka processing complete, replaced '+makaReplacements+' images');
+    setTimeout(function (){
+  
+        // Something you want delayed.
+        // makanow();
+                  
+      }, 10000);
 };
 
 document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
