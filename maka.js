@@ -186,12 +186,7 @@ function makanow(){
 		};
 	}
     makaLog('maka processing complete, replaced '+makaReplacements+' images');
-    setTimeout(function (){
-  
-        // Something you want delayed.
-        // makanow();
-                  
-      }, 10000);
+
 };
 
 document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
