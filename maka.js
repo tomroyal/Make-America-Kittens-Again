@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v2.2.1
+// v2.2.2
 // by Tom Royal 
 // tomroyal.com
 // Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
