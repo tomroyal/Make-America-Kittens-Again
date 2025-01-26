@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v2.2.1
+// v2.2.2
 // by Tom Royal 
 // tomroyal.com
 // Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
@@ -125,7 +125,9 @@ function makaReplace(img){
     
 }
 
-function makanow(){
+function makaNow(reprocess){
+
+    makaLog('maka init');
 
     makaLog('maka init');
 
@@ -133,7 +135,7 @@ function makanow(){
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
 	while (img = pagepics[i++]){	
 		
-		if (img.hasAttribute('makareplaced')){
+		if ((reprocess !== true ) && (img.hasAttribute('makareplaced'))){
 			// already replaced, skip
 		}
 		else {
@@ -189,5 +191,34 @@ function makanow(){
 
 };
 
-document.addEventListener('DOMContentLoaded', makanow(theKittens), false);
+function makaNoLazy(){
+    // rm lazy-load from all img
+    var pagepics=document.getElementsByTagName("img"), i=0, img;
+    while (img = pagepics[i++]){	
+        if (img.hasAttribute('loading')){
+            img.removeAttribute('loading');
+        };
+    }    
+}
+
+function makaRedo(timeDelay){
+    // execute again after timeDelay, with flag to hit every image again
+    setTimeout(makaNow(true), timeDelay);
+}
+
+if (window.location.href.indexOf('nytimes.com') != -1){
+    // aggressive two-hit blocking for the NYT
+    makaLog('maka nyt special');
+    makaNoLazy(); // kill lazy-load
+    makaNow(false); // first
+    document.addEventListener('DOMContentLoaded', makaRedo(1000), false); // second after 1 sec
+}    
+else {
+    document.addEventListener('DOMContentLoaded', makaNow(false), false);
+}
+
+
+
+
+
 
