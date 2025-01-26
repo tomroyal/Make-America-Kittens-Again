@@ -126,11 +126,7 @@ function makaReplace(img){
 }
 
 function makaNow(reprocess){
-
     makaLog('maka init');
-
-    makaLog('maka init');
-
 	// called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
 	var pagepics=document.getElementsByTagName("img"), i=0, img;	
 	while (img = pagepics[i++]){	
@@ -188,7 +184,6 @@ function makaNow(reprocess){
 		};
 	}
     makaLog('maka processing complete, replaced '+makaReplacements+' images');
-
 };
 
 function makaNoLazy(){
