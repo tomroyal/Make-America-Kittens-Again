@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v2.2.2
+// v2.2.4
 // by Tom Royal 
 // tomroyal.com
 // Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
@@ -183,7 +183,7 @@ function makaNow(reprocess){
             }; // if maybeReplace
 		};
 	}
-    makaLog('maka processing complete, replaced '+makaReplacements+' images');
+    makaLog('maka complete, replaced '+makaReplacements+' images');
 };
 
 function makaNoLazy(){
@@ -196,9 +196,14 @@ function makaNoLazy(){
     }    
 }
 
-function makaRedo(timeDelay){
+function makaRedo(){
+    // maka again, with the reprocess flag
+    makaNow(true);
+}    
+
+function makaDelayed(timeDelay){
     // execute again after timeDelay, with flag to hit every image again
-    setTimeout(makaNow(true), timeDelay);
+    setTimeout(makaRedo, timeDelay);
 }
 
 if (window.location.href.indexOf('nytimes.com') != -1){
@@ -206,7 +211,33 @@ if (window.location.href.indexOf('nytimes.com') != -1){
     makaLog('maka nyt special');
     makaNoLazy(); // kill lazy-load
     makaNow(false); // first
-    document.addEventListener('DOMContentLoaded', makaRedo(1000), false); // second after 1 sec
+    // document.addEventListener('DOMContentLoaded', makaDelayed(1000), false); // second after 1 sec
+}  
+else if (window.location.href.indexOf('washingtonpost.com') != -1){
+    
+    // need to handle figures instead of images
+
+    var getCaptions = document.querySelectorAll('figcaption'); 
+    getCaptions.forEach(function(figCaption) {
+
+        makaLog('maka considering '+figCaption.innerHTML);
+        var maybeReplace = true;
+        passlist.forEach(function(plist) {
+            if (figCaption.innerHTML.toLowerCase().indexOf(plist) != -1){
+                // let this pass
+                maybeReplace = false;
+            }
+        });
+        if (maybeReplace){
+            blocklist.forEach(function(blist) {
+                if (figCaption.innerHTML.toLowerCase().indexOf(blist) != -1){
+                    makaLog('maka replace for '+figCaption.innerHTML);
+                    var figImage = figCaption.parentElement.getElementsByTagName('img');
+                    makaReplace(figImage[0]);
+                };
+            });	// func on blist
+        }        
+    });
 }    
 else {
     document.addEventListener('DOMContentLoaded', makaNow(false), false);
