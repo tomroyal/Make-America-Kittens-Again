@@ -21,8 +21,10 @@ function randomIntFromInterval(min, max) { // min and max included
 
 // init blocklist
 
-var blocklist = ["trump", "трамп", "トランプ", "vance","elon"]; 
-var passlist = ["observance","irrelevance","contrivance","grievance","relevance","advance", "trumpet","trumped","trumping", "strump","strumpa","elongat","melon","belong","echelon","felon","erelong","agelong"];
+var blocklist = ["trump", "трамп", "トランプ", "vance","elon","musk"]; 
+var passlist = ["observance","irrelevance","contrivance","grievance","relevance","advance", "trumpet","trumped","trumping", "strump","strumpa","elongat","melon","belong","echelon","felon","erelong","agelong","muskie","muskox","musket","muskeg","muskier","muskrat","muskoxen","muskellunge"];
+
+
 
 // kitten data!
 
