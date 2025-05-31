@@ -1,13 +1,13 @@
 // maka.js - part of make america kittens again
-// v2.2.8
+// v3.0.0
 // by Tom Royal 
 // tomroyal.com
-// Thanks to jSanchoDev, akiatoji, mcoker and the many others who've contributesd help, advice and PRs
+// Thanks to jSanchoDev, akiatoji, mcoker, thunfischtoast and the many others who've contributesd help, advice and PRs
 
 var makaTesting = false; // for debugging only
 var makaReplacements = 0;
-
-// utility
+var blocklist = []; // init later now
+var passlist = [];
 
 function makaLog(logThis){
     if (makaTesting){
@@ -18,11 +18,6 @@ function makaLog(logThis){
 function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-// init blocklist
-
-var blocklist = ["trump", "трамп", "トランプ", "vance","elon","musk"]; 
-var passlist = ["observance","irrelevance","contrivance","grievance","relevance","advance", "trumpet","trumped","trumping", "strump","strumpa","elongat","melon","belong","echelon","felon","erelong","agelong","muskie","muskox","musket","muskeg","muskier","muskrat","muskoxen","muskellunge","pelona","zielone","barcelona","data:image/"];
 
 // kitten data!
 
@@ -123,65 +118,67 @@ function makaReplace(img){
 }
 
 function makaNow(reprocess){
-    makaLog('maka init');
-	// called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
-	var pagepics=document.getElementsByTagName("img"), i=0, img;	
-	while (img = pagepics[i++]){	
-		
-		if ((reprocess !== true ) && (img.hasAttribute('makareplaced'))){
-			// already replaced, skip
-		}
-		else {
-			// not yet replaced
-			var alttext = String(img.alt).toLowerCase();
-			var imgsrc = String(img.src).toLowerCase();
-			
-			if (img.parentElement.nodeName != 'BODY'){
-				// check parent innerHTML for blackilist
-				var parenttag = img.parentElement.innerHTML.toLowerCase();
-			}
-			else {
-				// prevent parse of entire doc
-				var parenttag = '';
-			};
-            
-            // check for allowlist
-            var maybeReplace = true;
-            passlist.forEach(function(plist) {
-                if ((alttext.indexOf(plist) != -1) || (imgsrc.indexOf(plist) != -1) || (parenttag.indexOf(plist) != -1)){
-                    // let this pass
-                    img.setAttribute("makareplaced", img.src);
-                    maybeReplace = false;
-                }
-            });
-            
-            if (maybeReplace){
-                // not allow-listed
-                blocklist.forEach(function(blist) {
-                    if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
-                        // matches, replace
 
-                        if (window.location.href.indexOf('nytimes.com') != -1){
-                            // Need to prevent React page re-hydrating image
-                            // duplicate image, delete original, kitten the new one
-                            makaLog('nyt clone');
-                            const clonedImage = img.cloneNode(true);
-                            newimg = img.parentNode.appendChild(clonedImage);
-                            img.remove();
-                            makaReplace(newimg);
-                        }
-                        else {
-                            makaLog(blist);
-                            makaReplace(img);
-                        }
-                        
-                        makaReplacements++;
-                    };
-                });	// func on blist
-            }; // if maybeReplace
-		};
-	}
-    makaLog('maka complete, replaced '+makaReplacements+' images');
+        makaLog('maka init');
+        // called on page load. Searches all img alt text and srcs for the strings in blocklist, replaces with kittens
+        var pagepics=document.getElementsByTagName("img"), i=0, img;	
+        while (img = pagepics[i++]){	
+            
+            if ((reprocess !== true ) && (img.hasAttribute('makareplaced'))){
+                // already replaced, skip
+            }
+            else {
+                // not yet replaced
+                var alttext = String(img.alt).toLowerCase();
+                var imgsrc = String(img.src).toLowerCase();
+                
+                if (img.parentElement.nodeName != 'BODY'){
+                    // check parent innerHTML for blackilist
+                    var parenttag = img.parentElement.innerHTML.toLowerCase();
+                }
+                else {
+                    // prevent parse of entire doc
+                    var parenttag = '';
+                };
+                
+                // check for allowlist
+                var maybeReplace = true;
+                passlist.forEach(function(plist) {
+                    if ((alttext.indexOf(plist) != -1) || (imgsrc.indexOf(plist) != -1) || (parenttag.indexOf(plist) != -1)){
+                        // let this pass
+                        img.setAttribute("makareplaced", img.src);
+                        maybeReplace = false;
+                    }
+                });
+                
+                if (maybeReplace){
+                    // not allow-listed
+                    blocklist.forEach(function(blist) {
+                        if ((alttext.indexOf(blist) != -1) || (imgsrc.indexOf(blist) != -1) || (parenttag.indexOf(blist) != -1)){
+                            // matches, replace
+
+                            if (window.location.href.indexOf('nytimes.com') != -1){
+                                // Need to prevent React page re-hydrating image
+                                // duplicate image, delete original, kitten the new one
+                                makaLog('nyt clone');
+                                const clonedImage = img.cloneNode(true);
+                                newimg = img.parentNode.appendChild(clonedImage);
+                                img.remove();
+                                makaReplace(newimg);
+                            }
+                            else {
+                                makaLog(blist);
+                                makaReplace(img);
+                            }
+                            
+                            makaReplacements++;
+                        };
+                    });	// func on blist
+                }; // if maybeReplace
+            };
+        }
+        makaLog('maka complete, replaced '+makaReplacements+' images');
+   
 };
 
 function makaNoLazy(){
@@ -204,39 +201,60 @@ function makaDelayed(timeDelay){
     setTimeout(makaRedo, timeDelay);
 }
 
-if (window.location.href.indexOf('nytimes.com') != -1){
-    // aggressive two-hit blocking for the NYT
-    makaLog('maka nyt special');
-    makaNoLazy(); // kill lazy-load
-    makaNow(false); // first
-    // document.addEventListener('DOMContentLoaded', makaDelayed(1000), false); // second after 1 sec
-}  
-else if (window.location.href.indexOf('washingtonpost.com') != -1){
-    
-    // need to handle figures instead of images
+// runtime
 
-    var getCaptions = document.querySelectorAll('figcaption'); 
-    getCaptions.forEach(function(figCaption) {
+function getSettings() {
+    var stdblocklist = ["trump", "трамп", "トランプ", "vance","elon","musk"]; 
+    var stdpasslist = ["observance","irrelevance","contrivance","grievance","relevance","advance", "trumpet","trumped","trumping", "strump","strumpa","elongat","melon","belong","echelon","felon","erelong","agelong","muskie","muskox","musket","muskeg","muskier","muskrat","muskoxen","muskellunge","pelona","zielone","barcelona","data:image/"];
+    chrome.storage.sync.get({
+        cblocklist: [],
+        cpasslist: []
+    }, function(items) {
+        blocklist = items.cblocklist;
+        passlist = items.cpasslist;
+        // Append standards
+        blocklist = blocklist.concat(stdblocklist);
+        passlist  = passlist.concat(stdpasslist);
+        // now continue
 
-        makaLog('maka considering '+figCaption.innerHTML);
-        var maybeReplace = true;
-        passlist.forEach(function(plist) {
-            if (figCaption.innerHTML.toLowerCase().indexOf(plist) != -1){
-                // let this pass
-                maybeReplace = false;
+        // test for special cases of NYT and WaPo, else just go:
+            if (window.location.href.indexOf('nytimes.com') != -1){
+                // aggressive two-hit blocking for the NYT
+                makaLog('maka nyt special');
+                makaNoLazy(); // kill lazy-load
+                makaNow(false); // first
+                // document.addEventListener('DOMContentLoaded', makaDelayed(1000), false); // second after 1 sec
+            }  
+            else if (window.location.href.indexOf('washingtonpost.com') != -1){
+                
+                // need to handle figures instead of images
+                var getCaptions = document.querySelectorAll('figcaption'); 
+                getCaptions.forEach(function(figCaption) {
+
+                    makaLog('maka considering '+figCaption.innerHTML);
+                    var maybeReplace = true;
+                    passlist.forEach(function(plist) {
+                        if (figCaption.innerHTML.toLowerCase().indexOf(plist) != -1){
+                            // let this pass
+                            maybeReplace = false;
+                        }
+                    });
+                    if (maybeReplace){
+                        blocklist.forEach(function(blist) {
+                            if (figCaption.innerHTML.toLowerCase().indexOf(blist) != -1){
+                                makaLog('maka replace for '+figCaption.innerHTML);
+                                var figImage = figCaption.parentElement.getElementsByTagName('img');
+                                makaReplace(figImage[0]);
+                            };
+                        });	// func on blist
+                    }        
+                });
+            }    
+            else {
+                // standard run
+                document.addEventListener('DOMContentLoaded', makaNow(false), false);
             }
         });
-        if (maybeReplace){
-            blocklist.forEach(function(blist) {
-                if (figCaption.innerHTML.toLowerCase().indexOf(blist) != -1){
-                    makaLog('maka replace for '+figCaption.innerHTML);
-                    var figImage = figCaption.parentElement.getElementsByTagName('img');
-                    makaReplace(figImage[0]);
-                };
-            });	// func on blist
-        }        
-    });
-}    
-else {
-    document.addEventListener('DOMContentLoaded', makaNow(false), false);
-}
+} // getSettings
+
+ getSettings(); // get Settings and init block 

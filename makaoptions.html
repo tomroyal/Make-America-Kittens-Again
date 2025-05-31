@@ -13,8 +13,9 @@ body {
 <body>
 
 <h2>Make America Kittens Again</h2>
-<p>v2.2.8</p>
+<p>v3.0.0</p>
 <p>Donald Trump is now being blocked. Again.</p>
+
 
 <p>Editorial note: this plugin does not advocate against or incite hatred towards groups of people based on their race or ethnic origin, religion, disability, gender, age, veteran status, nationality, sexual orientation, gender, gender identity or any other characteristic that is associated with systematic discrimination or marginalisation. It advocates kittens in the specific case of Donald Trump.</p>
 
@@ -28,6 +29,24 @@ body {
 <p><a href="https://ko-fi.com/A300ZUV" target="_new"><img src="Ko-fi_Blue.png" width="200px" /></a></p>
 
 <p><a href="https://github.com/tomroyal/Make-America-Kittens-Again" target="_blank">https://github.com/tomroyal/Make-America-Kittens-Again</a>
+
+<h3>Configuration</h3>
+
+<div>
+    <label for="blocklist">Additional blocked terms (one per line):</label><br>
+    <textarea id="blocklist" rows="6" cols="40"></textarea>
+</div>
+
+<div style="margin-top: 1em;">
+    <label for="passlist">Allowed allowed terms (one per line):</label><br>
+    <textarea id="passlist" rows="6" cols="40"></textarea>
+</div>
+
+<div style="margin-top: 1em;">
+    <button id="save">Save Changes</button>
+    <span id="status" style="margin-left: 1em;"></span>
+</div>
+<script src="makaoptions.js"></script>
 
 </body>
 </html>
