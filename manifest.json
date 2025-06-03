@@ -2,9 +2,11 @@
   "manifest_version": 3,
   "name": "Make America Kittens Again",
   "description": "Replaces images of Donald Trump with kittens. Again.",
-  "version": "2.2.8",
+  "version": "3.0.0",
   "options_page": "makaoptions.html",
-  "permissions": [],
+  "permissions": [
+    "storage"
+  ],
   "icons": { "48": "maka48.png",
           "128": "maka128.png" },
   "action": {
