@@ -1,5 +1,5 @@
 // maka.js - part of make america kittens again
-// v3.0.0
+// v3.0.1
 // by Tom Royal 
 // tomroyal.com
 // Thanks to jSanchoDev, akiatoji, mcoker, thunfischtoast and the many others who've contributesd help, advice and PRs
@@ -58,9 +58,20 @@ var theKittens = {"kitten": [
 	{"file": "34.jpg", "Credit": "Sydney Pettygrove"},
 	{"file": "35.jpg", "Credit": "Sydney Pettygrove"},
 	{"file": "36.jpg", "Credit": "Dionna Humphrey"},
-    {"file": "37.jpg", "Credit": "Winter Miller"}
+    {"file": "37.jpg", "Credit": "Winter Miller"},
+    {"file": "38.jpg", "Credit": "Tom Royal"}
     ]
 };
+
+function makaUndo() {
+  var pagepics=document.getElementsByTagName("img"), i=0, img;	
+  while (img = pagepics[i++]){
+    if (img.hasAttribute('makareplaced')){
+        img.src = img.getAttribute('makareplaced');
+    }
+    
+  }  	
+}
 
 function makaReplace(img){
     // do an image replacement
@@ -256,5 +267,15 @@ function getSettings() {
             }
         });
 } // getSettings
+
+// trigger for undo from context menu
+browser.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.action == 'makaUndo'){
+      makaUndo();
+    }
+    sendResponse({success: "TRUE"});
+    return true;
+ });
 
  getSettings(); // get Settings and init block 
